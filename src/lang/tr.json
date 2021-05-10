@@ -1,0 +1,11 @@
+{
+	"Sign Up" : "Kayıt Ol",
+	"Username ?":"Kullanıcı İsmi ?",
+	"Display Name ?":"Görünen İsim ?",
+	"Pass ?":"Şifre ?",
+	"Pass Repeat ?":"Şifre Tekrar ?",
+	"Aggree ?": "Onaylıyorum ?",
+	"Password mismatch": "Şifreler Eşleşmiyor",
+	"Sign In": "Kayıt Ol",
+	"Login Page": "Giriş Sayfası"
+}
