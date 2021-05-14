@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import {Authantication} from "../shared/AuthanticationContext";
 const ProfileCard = (props) => {
 	const pathUsername = props.match.params.username;
 	const loggedInUser = props.username;
@@ -14,5 +15,19 @@ const ProfileCard = (props) => {
 		</div>
 	);
 }
-export default withRouter(ProfileCard);
+
+class ProfileCardContext extends React.Component{
+	static contextType = Authantication;
+	render(){
+		return(
+			<>
+				<ProfileCard
+					{...this.props}
+					username={this.context.state.username}
+				/>
+			</>
+		);
+	}
+}
+export default withRouter(ProfileCardContext);
 

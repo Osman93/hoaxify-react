@@ -38,17 +38,11 @@ class App extends React.Component {
         		<Switch>
   	        	<Route exact path="/" component={HomePage}/>
   		        {!isLoggedIn &&
-                  <Route path="/login" component={(props) => {
-                    return (
-                      <LoginPage {...props} 
-                      onLoginSuccess={this.onLoginSuccess}
-    
-                    />)
-                  }}/>
+                  <Route path="/login" component={LoginPage}/>
               }
   		        <Route path="/signup" component={UserSignupPage}/>
   		        <Route path="/user/:username" component={(props) =>{
-                  return <UserPage {...props} username={username}/>
+                  return <UserPage {...props}/>
               }}/>
          		  <Redirect to="/" />{/*  Rouelardan hiçbiri yoksa bu alan anasayfaya yönlenecek Switch olmasa hep anasayfada*/}
   		     </Switch>
