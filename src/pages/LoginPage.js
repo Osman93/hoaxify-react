@@ -32,6 +32,8 @@ import { baseUrl } from "../api/apiCall";
 		try{
 
 			await login(crediantials)
+			this.props.onLoginSuccess(crediantials.username);
+			this.props.history.push("/")
 		}catch(err){
 			console.log(err.response);
 			this.setState({
