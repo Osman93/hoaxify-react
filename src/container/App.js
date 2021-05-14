@@ -10,31 +10,14 @@ import TopBar from "../components/TopBar";
 
 
 class App extends React.Component {
-  state = {
-    username:"",
-    isLoggedIn:false
-  }
-
-  onLoginSuccess = (username) => {
-    this.setState({
-      username,
-      isLoggedIn:true
-    });
-  }
-
-  onLogout(){
-    this.setState({
-      username:"",
-      isLoggedIn:false
-    })
-  }
+  
 
   render(){
-    const { username , isLoggedIn } = this.state;
+    const isLoggedIn = false;
     return (
       <div>
         	<Router>
-      	    <TopBar isLoggedIn={isLoggedIn} username={username} onLogout={() => this.onLogout()}/>
+      	    <TopBar/>
         		<Switch>
   	        	<Route exact path="/" component={HomePage}/>
   		        {!isLoggedIn &&

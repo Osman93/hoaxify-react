@@ -6,10 +6,10 @@ import ButtonWithProgress from "../components/ButtonWithProgress";
 import { changeLanguage , login} from "../api/apiCall";
 import { withApiProgress } from "../shared/ApiProgress"
 import { baseUrl } from "../api/apiCall";
-import { Authantication } from "../shared/AuthanticationContext";
+//import { Authantication } from "../shared/AuthanticationContext";
 
  class LoginPage extends React.Component{
- 	static contextType = Authantication; //Class üzerinde bu şekilde context getirilir.
+ 	//static contextType = Authantication; //Class üzerinde bu şekilde context getirilir.
 	state = {
 		username:"",
 		password:"",
@@ -36,7 +36,7 @@ import { Authantication } from "../shared/AuthanticationContext";
 				...response.data,
 				password:crediantials.password
 			}
-			this.context.onLoginSuccess(authState);
+			//this.context.onLoginSuccess(authState);
 			this.props.history.push("/")
 		}catch(err){
 			console.log(err.response);
