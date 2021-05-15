@@ -1,89 +1,87 @@
-import React from "react";
+import React , { useState , useEffect } from "react";
 import axios from "axios";
 import { withTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import Input from "../components/Input";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { changeLanguage , login} from "../api/apiCall";
 import { withApiProgress } from "../shared/ApiProgress"
 import { baseUrl } from "../api/apiCall";
+import { loginHandler } from "../redux/authActions";
+
 //import { Authantication } from "../shared/AuthanticationContext";
 
- class LoginPage extends React.Component{
+ const LoginPage = (props) => {
  	//static contextType = Authantication; //Class üzerinde bu şekilde context getirilir.
-	state = {
-		username:"",
-		password:"",
-		error:"",
-	}
 
-	onChange(e){
-		const {name,value} = e.target;
-		this.setState({
-			[name]:value,
-			error:"",
-		});
-	}
+ 	const [ username , setUsername ] = useState("");
+ 	const [ password , setPassword ] = useState("");
+ 	const [ error , setError ] = useState("");
 	
-	async loginAction(){
+	useEffect(() => {
+		setError("");
+	},[username,password])
+
+	
+	
+	const loginAction = async () => {
 		const crediantials = {
-			username:this.state.username,
-			password:this.state.password
+			username:username,
+			password:password
 		} 
 		try{
-
-			const response = await login(crediantials)
-			const authState = {
-				...response.data,
-				password:crediantials.password
-			}
-			//this.context.onLoginSuccess(authState);
-			this.props.history.push("/")
+			await props.dispatch(loginHandler(crediantials));
+			//.context.onLoginSuccess(authState);
+			props.history.push("/")
 		}catch(err){
-			console.log(err.response);
-			this.setState({
-				error:err.response.data.message,
-			})
+			setError(err?.response?.data?.message);
 		};
 		
 	}
-	render(){
-		const { t } = this.props;
-		const buttonEnabled = this.state.username && this.state.password;
+	
+	const { t } = props;
+	const buttonEnabled = username && password;
 		return (
 			<div  className="container">
 				<h1>{t("Login Page")}</h1>
 				<Input 
 					label={t("Username ?")}
 					name="username"
-					value={this.state.username}
-					onChange={(e) => this.onChange(e)}
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
 				/>
 				<Input 
 					label={t("Pass ?")}
 					name="password"
 					type="password"
-					value={this.state.password}
-					onChange={(e) => this.onChange(e)}
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
 				/>
-				{this.state.error && (
+				{error && (
 					<div className="alert alert-danger" role="alert">
- 					 {this.state.error}
+ 					 {error}
 					</div>
 				)}
 				<ButtonWithProgress
 					text={t("Sign In")}
 					buttonEnabled={!buttonEnabled}
-					onClick={()=>this.loginAction()}
-					loading={this.props.loading}
+					onClick={loginAction}
+					loading={props.loading}
 				/>
 
 				
 			</div>
 		);
-	}
+	
 }
-
-export default withApiProgress(
+const LoginPageWithProgressAndTranslation = withApiProgress(
 	withTranslation()(LoginPage),
 	baseUrl + "api/1.0/auth"
 );
+
+
+
+const LoginPageRedux = connect()(LoginPageWithProgressAndTranslation);
+
+
+export default LoginPageRedux

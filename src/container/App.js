@@ -1,5 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Route , Redirect , Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import UserSignupPage from '../pages/UserSignupPage';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '../pages/HomePage';
@@ -13,7 +14,7 @@ class App extends React.Component {
   
 
   render(){
-    const isLoggedIn = false;
+    const { isLoggedIn } = this.props ;
     return (
       <div>
         	<Router>
@@ -36,4 +37,9 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  return {
+    isLoggedIn: store.isLoggedIn
+  }
+}
+export default connect(mapStateToProps)(App);

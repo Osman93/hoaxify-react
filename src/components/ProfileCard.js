@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 //import {Authantication} from "../shared/AuthanticationContext";
 const ProfileCard = (props) => {
 	const pathUsername = props.match.params.username;
@@ -29,5 +30,10 @@ const ProfileCard = (props) => {
 		);
 	}
 }*/
-export default withRouter(ProfileCard);
+const mapStateToProps = (store) => {
+	return {
+		username:store.username
+	}
+}
+export default connect(mapStateToProps)(withRouter(ProfileCard));
 
