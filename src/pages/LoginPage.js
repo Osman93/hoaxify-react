@@ -1,11 +1,11 @@
 import React , { useState , useEffect } from "react";
 import axios from "axios";
-import { withTranslation } from "react-i18next";
-import { connect } from "react-redux";
+import { withTranslation , useTranslation } from "react-i18next";
+import { connect , useDispatch } from "react-redux";
 import Input from "../components/Input";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { changeLanguage , login} from "../api/apiCall";
-import { withApiProgress } from "../shared/ApiProgress"
+import { withApiProgress , useApiProgress } from "../shared/ApiProgress"
 import { baseUrl } from "../api/apiCall";
 import { loginHandler } from "../redux/authActions";
 
@@ -18,6 +18,8 @@ import { loginHandler } from "../redux/authActions";
  	const [ password , setPassword ] = useState("");
  	const [ error , setError ] = useState("");
 	
+	const dispatch = useDispatch();//Reduxta connect gerek kalmaması için
+
 	useEffect(() => {
 		setError("");
 	},[username,password])
@@ -30,7 +32,7 @@ import { loginHandler } from "../redux/authActions";
 			password:password
 		} 
 		try{
-			await props.dispatch(loginHandler(crediantials));
+			await dispatch(loginHandler(crediantials));
 			//.context.onLoginSuccess(authState);
 			props.history.push("/")
 		}catch(err){
@@ -39,7 +41,9 @@ import { loginHandler } from "../redux/authActions";
 		
 	}
 	
-	const { t } = props;
+	const { t } = useTranslation();
+	const pendingCall = useApiProgress(baseUrl + "api/1.0/auth");
+	console.log(pendingCall);
 	const buttonEnabled = username && password;
 		return (
 			<div  className="container">
@@ -66,7 +70,7 @@ import { loginHandler } from "../redux/authActions";
 					text={t("Sign In")}
 					buttonEnabled={!buttonEnabled}
 					onClick={loginAction}
-					loading={props.loading}
+					loading={pendingCall}
 				/>
 
 				
@@ -74,14 +78,14 @@ import { loginHandler } from "../redux/authActions";
 		);
 	
 }
-const LoginPageWithProgressAndTranslation = withApiProgress(
-	withTranslation()(LoginPage),
+const LoginPageWithProgress = withApiProgress(
+	LoginPage,
 	baseUrl + "api/1.0/auth"
 );
 
 
 
-const LoginPageRedux = connect()(LoginPageWithProgressAndTranslation);
+//const LoginPageRedux = connect()(LoginPageWithProgressAndTranslation);
 
 
-export default LoginPageRedux
+export default LoginPage
